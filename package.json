@@ -1,5 +1,21 @@
 {
   "name": "Eno",
+  "version": "0.0.1",
+  "description": "A fully-on-chain game engine",
+  "author": "0x00DAO",
+  "license": "MIT",
+  "homepage": "https://github.com/0x00DAO/Eon/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0x00DAO/Eon"
+  },
+  "keywords": [
+    "fully-on-chain",
+    "game",
+    "block-chain",
+    "web3",
+    "framework"
+  ],
   "scripts": {
     "test": "npx hardhat test",
     "compile": "rm -rf ./abi && npx hardhat export-abi && find ./abi/contracts -name '*.json'|xargs -I file npx abi-types-generator file --provider=ethers_v5"
