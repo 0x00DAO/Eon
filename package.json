@@ -4,8 +4,7 @@
   "files": [
     "/contracts/**/*.sol",
     "/artifacts/contracts/*.json",
-    "/networks/**/*",
-    "!/contracts/test_utils/**/*"
+    "!/contracts/example/**/*"
   ],
   "description": "A fully-on-chain game engine",
   "author": "0x00DAO",
