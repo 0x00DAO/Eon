@@ -1,6 +1,12 @@
 {
   "name": "@0x00dao/eon",
   "version": "0.0.1",
+  "files": [
+    "/contracts/**/*.sol",
+    "/artifacts/contracts/*.json",
+    "/networks/**/*",
+    "!/contracts/test_utils/**/*"
+  ],
   "description": "A fully-on-chain game engine",
   "author": "0x00DAO",
   "license": "MIT",
