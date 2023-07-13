@@ -1,5 +1,5 @@
 {
-  "name": "@zero-dao/eon",
+  "name": "@0x00dao/eon",
   "version": "0.0.1",
   "files": [
     "/contracts/**/*.sol",
