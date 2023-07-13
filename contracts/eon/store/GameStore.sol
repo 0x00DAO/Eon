@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {IRoot} from "../interface/IRoot.sol";
 import {BaseComponent} from "../component/BaseComponent.sol";
 import {ComponentType} from "../component/ComponentType.sol";
+import {StoreRecordIndex} from "../interface/IStore.sol";
 
 uint256 constant ID = uint256(keccak256("game.gamestore.GameStore"));
 uint256 constant SLOT = uint256(keccak256("game.gamestore.slot"));
@@ -89,18 +90,6 @@ contract GameStore is
         return entityToValue[entity];
     }
 
-    /** Not implemented in BareComponent */
-    function getEntities() public view virtual returns (uint256[] memory) {
-        revert GameStore__NotImplemented();
-    }
-
-    /** Not implemented in BareComponent */
-    function getEntitiesWithValue(
-        bytes memory
-    ) public view virtual returns (uint256[] memory) {
-        revert GameStore__NotImplemented();
-    }
-
     /**
      * Set the given component value for the given entity.
      * Registers the update in the World contract.
@@ -124,10 +113,6 @@ contract GameStore is
     function _remove(uint256 entity) internal virtual {
         // Remove the entity from the mapping
         delete entityToValue[entity];
-    }
-
-    function set(uint256 entity, uint256 value) public virtual {
-        set(entity, abi.encode(value));
     }
 
     // as record operations are not supported in bare component, we use a slot to store the tableId
@@ -174,6 +159,20 @@ contract GameStore is
         bytes[] memory result = new bytes[](columnCount);
         for (uint8 i = 0; i < columnCount; i++) {
             result[i] = _getField(tableId, key, i);
+        }
+        return result;
+    }
+
+    function _getRecords(
+        StoreRecordIndex[] calldata recordIndices
+    ) internal view returns (bytes[][] memory) {
+        bytes[][] memory result = new bytes[][](recordIndices.length);
+        for (uint256 i = 0; i < recordIndices.length; i++) {
+            result[i] = _getRecord(
+                recordIndices[i].table,
+                recordIndices[i].key,
+                recordIndices[i].columnCountOrIndex
+            );
         }
         return result;
     }
