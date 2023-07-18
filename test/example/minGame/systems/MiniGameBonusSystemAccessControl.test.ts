@@ -134,5 +134,7 @@ describe('MiniGameBonusSystemAccessControl', function () {
         await miniGameBonusSystem.hasRole(PAUSER_ROLE, addr1.address)
       ).to.equal(false);
     });
+
+    it('success: grant role to agent has effect', async function () {});
   });
 });
