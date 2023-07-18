@@ -110,6 +110,14 @@ describe('MiniGameBonusSystemAccessControl', function () {
         await miniGameBonusSystem.hasRole(PAUSER_ROLE, addr1.address)
       ).to.equal(true);
 
+      //renounceRole role from root not effect
+      await gameRootContract
+        .connect(addr1)
+        .renounceRole(PAUSER_ROLE, addr1.address);
+      expect(
+        await miniGameBonusSystem.hasRole(PAUSER_ROLE, addr1.address)
+      ).to.equal(true);
+
       //revoking role from system has effect
       await miniGameBonusSystem.revokeRole(PAUSER_ROLE, addr1.address);
       expect(
@@ -135,6 +143,38 @@ describe('MiniGameBonusSystemAccessControl', function () {
       ).to.equal(false);
     });
 
-    it('success: grant role to agent has effect', async function () {});
+    it('fail: grant role to system not effect', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+
+      expect(
+        await miniGameBonusSystem.hasRole(DEFAULT_ADMIN_ROLE, owner.address)
+      ).to.equal(true);
+      expect(
+        await miniGameBonusSystem.hasRole(DEFAULT_ADMIN_ROLE, addr1.address)
+      ).to.equal(false);
+
+      //grant role fail
+      await expect(
+        miniGameBonusSystem
+          .connect(addr1)
+          .grantRole(DEFAULT_ADMIN_ROLE, owner.address)
+      ).to.be.revertedWith(
+        'AccessControl: account 0x70997970c51812dc3a010c7d01b50e0d17dc79c8 is missing role 0x0000000000000000000000000000000000000000000000000000000000000000'
+      );
+
+      await expect(
+        miniGameBonusSystem.connect(addr1).grantRole(PAUSER_ROLE, owner.address)
+      ).to.be.revertedWith(
+        'AccessControl: account 0x70997970c51812dc3a010c7d01b50e0d17dc79c8 is missing role 0x0000000000000000000000000000000000000000000000000000000000000000'
+      );
+
+      await expect(
+        miniGameBonusSystem
+          .connect(addr1)
+          .grantRole(UPGRADER_ROLE, owner.address)
+      ).to.be.revertedWith(
+        'AccessControl: account 0x70997970c51812dc3a010c7d01b50e0d17dc79c8 is missing role 0x0000000000000000000000000000000000000000000000000000000000000000'
+      );
+    });
   });
 });
